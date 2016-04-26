@@ -212,6 +212,9 @@ public class HandlerSubscriber<T> extends ChannelDuplexHandler implements Subscr
 
     @Override
     public void onNext(T t) {
+        if (t == null) {
+            throw new NullPointerException("Null element published");
+        }
 
         // Publish straight to the context.
         lastWriteFuture = ctx.writeAndFlush(t);

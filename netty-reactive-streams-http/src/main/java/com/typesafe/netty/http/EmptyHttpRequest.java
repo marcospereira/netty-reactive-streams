@@ -42,6 +42,17 @@ class EmptyHttpRequest extends DelegateHttpRequest implements FullHttpRequest {
     }
 
     @Override
+    public FullHttpRequest copy(ByteBuf newContent) {
+        if (request instanceof FullHttpRequest) {
+            return new EmptyHttpRequest(((FullHttpRequest) request).copy(newContent));
+        } else {
+            FullHttpRequest copy = new DefaultFullHttpRequest(getProtocolVersion(), getMethod(), getUri()).copy(newContent);
+            copy.headers().set(headers());
+            return new EmptyHttpRequest(copy);
+        }
+    }
+
+    @Override
     public FullHttpRequest retain(int increment) {
         ReferenceCountUtil.retain(message, increment);
         return this;
@@ -54,14 +65,26 @@ class EmptyHttpRequest extends DelegateHttpRequest implements FullHttpRequest {
     }
 
     @Override
+    public FullHttpRequest touch() {
+        ReferenceCountUtil.touch(message);
+        return this;
+    }
+
+    @Override
+    public FullHttpRequest touch(Object hint) {
+        ReferenceCountUtil.touch(message, hint);
+        return this;
+    }
+
+    @Override
     public HttpHeaders trailingHeaders() {
         return new DefaultHttpHeaders();
     }
 
     @Override
-    public HttpContent duplicate() {
-        if (request instanceof HttpContent) {
-            return ((HttpContent) request).duplicate();
+    public FullHttpRequest duplicate() {
+        if (request instanceof FullHttpRequest) {
+            return ((FullHttpRequest) request).duplicate();
         } else {
             return this;
         }

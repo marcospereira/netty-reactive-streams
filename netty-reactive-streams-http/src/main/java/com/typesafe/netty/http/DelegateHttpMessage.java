@@ -2,7 +2,6 @@ package com.typesafe.netty.http;
 
 import io.netty.handler.codec.DecoderResult;
 import io.netty.handler.codec.http.*;
-import org.reactivestreams.Publisher;
 
 class DelegateHttpMessage implements HttpMessage {
     protected final HttpMessage message;
@@ -12,8 +11,13 @@ class DelegateHttpMessage implements HttpMessage {
     }
 
     @Override
+    public HttpVersion protocolVersion() {
+        return message.protocolVersion();
+    }
+
+    @Override
     public HttpVersion getProtocolVersion() {
-        return message.getProtocolVersion();
+        return message.protocolVersion();
     }
 
     @Override
@@ -28,8 +32,13 @@ class DelegateHttpMessage implements HttpMessage {
     }
 
     @Override
+    public DecoderResult decoderResult() {
+        return message.decoderResult();
+    }
+
+    @Override
     public DecoderResult getDecoderResult() {
-        return message.getDecoderResult();
+        return message.decoderResult();
     }
 
     @Override

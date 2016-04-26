@@ -45,7 +45,7 @@ public class FullStackHttpIdentityProcessorVerificationTest extends IdentityProc
     private ExecutorService executorService;
 
     public FullStackHttpIdentityProcessorVerificationTest() {
-        super(new TestEnvironment(1000));
+        super(new TestEnvironment(2000));
     }
 
     @BeforeClass
